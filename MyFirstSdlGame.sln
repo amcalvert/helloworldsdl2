@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFirstSdlGame", "MyFirstSdlGame.csproj", "{6BE54168-706C-4685-9561-184F9EEE1504}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{053AC47E-36DC-472C-A78A-4FAC28E636BA}"
+	ProjectSection(SolutionItems) = preProject
+		lib\SDL2.dll = lib\SDL2.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

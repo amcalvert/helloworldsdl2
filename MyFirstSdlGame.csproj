@@ -13,9 +13,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="SDL2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Content Include="Assets\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
+
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(ProjectDir)\lib\SDL2.dll&quot; &quot;$(OutDir)\SDL2.dll&quot;" />
+  </Target>
 
 </Project>

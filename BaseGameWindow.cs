@@ -70,7 +70,7 @@ namespace helloworld
 
         private void DrawContent()
         {
-            var image = new Image(@"C:\Users\amcalvert\source\repos\games\helloworld\Assets\bmps\preview.bmp");
+            var image = new Image(@".\Assets\bmps\preview.bmp");
             image.Draw(_windowSurface);
         }
 
