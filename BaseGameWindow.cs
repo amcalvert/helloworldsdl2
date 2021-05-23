@@ -1,6 +1,7 @@
-﻿using MyFirstSdlGame.Assets;
+﻿using MyFirstSdlGame.Elements;
 using SDL2;
 using System;
+using System.Collections.Generic;
 
 namespace helloworld
 {
@@ -9,6 +10,8 @@ namespace helloworld
         private IntPtr _window = IntPtr.Zero;
         private IntPtr _windowSurface = IntPtr.Zero;
         private bool _quitRequested;
+        private IList<SurfaceElement> _activeElements = new List<SurfaceElement>();
+        private IDictionary<string, SurfaceElement> _loadedElements = new Dictionary<string, SurfaceElement>();
 
         public BaseGameWindow()
         {
@@ -18,7 +21,7 @@ namespace helloworld
 
         private void InitSdl()
         {
-            if(SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0) throw new Exception($"sdl count not initialise! {SDL.SDL_GetError()}");
+            if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0) throw new Exception($"sdl count not initialise! {SDL.SDL_GetError()}");
         }
 
         private void InitWindow()
@@ -36,7 +39,9 @@ namespace helloworld
         public void Run()
         {
             InitSurface();
+            LoadContent();
 
+            _activeElements.Add(_loadedElements["default"]);
             while (!_quitRequested)
             {
                 HandleEvents();
@@ -44,6 +49,7 @@ namespace helloworld
                 SDL.SDL_UpdateWindowSurface(_window);
             }
 
+            TearDownContent();
             Dispose();
         }
 
@@ -56,22 +62,69 @@ namespace helloworld
                     case SDL.SDL_EventType.SDL_QUIT:
                         _quitRequested = true;
                         break;
+                    case SDL.SDL_EventType.SDL_KEYDOWN:
+                        HandleKeyDown(sdlEvent);
+                        break;
                     default:
                         break;
                 }
             }
         }
 
+        private void HandleKeyDown(SDL.SDL_Event keyDownEvent)
+        {
+            _activeElements.Clear();
+            switch (keyDownEvent.key.keysym.sym)
+            {
+                case SDL.SDL_Keycode.SDLK_UP:
+                    _activeElements.Add(_loadedElements["up"]);
+                    break;
+                case SDL.SDL_Keycode.SDLK_LEFT:
+                    _activeElements.Add(_loadedElements["left"]);
+                    break;
+                case SDL.SDL_Keycode.SDLK_RIGHT:
+                    _activeElements.Add(_loadedElements["right"]);
+                    break;
+                case SDL.SDL_Keycode.SDLK_DOWN:
+                    _activeElements.Add(_loadedElements["down"]);
+                    break;
+                default:
+                    _activeElements.Add(_loadedElements["default"]);
+                    break;
+            }
+        }
 
         private void InitSurface()
         {
             _windowSurface = SDL.SDL_GetWindowSurface(_window);
         }
 
+        private void LoadContent()
+        {
+            _loadedElements = new Dictionary<string, SurfaceElement>()
+            {
+                { "default",  new Image(@".\Assets\bmps\press.bmp") },
+                { "up", new Image(@".\Assets\bmps\up.bmp") },
+                { "down",  new Image(@".\Assets\bmps\down.bmp") },
+                { "left",  new Image(@".\Assets\bmps\left.bmp") },
+                { "right",  new Image(@".\Assets\bmps\right.bmp") }
+            };
+        }
+
         private void DrawContent()
         {
-            var image = new Image(@".\Assets\bmps\preview.bmp");
-            image.Draw(_windowSurface);
+            foreach (var drawElement in _activeElements)
+            {
+                drawElement.Draw(_windowSurface);
+            }
+        }
+
+        private void TearDownContent()
+        {
+            foreach (var element in _loadedElements.Values)
+            {
+                element.Dispose();
+            }
         }
 
         public void Dispose()
