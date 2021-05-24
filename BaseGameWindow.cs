@@ -20,11 +20,12 @@ namespace helloworld
         {
             InitSdl();
             InitWindow();
+            InitImageLoading();
         }
 
         private void InitSdl()
         {
-            if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0) throw new Exception($"sdl count not initialise! {SDL.SDL_GetError()}");
+            if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0) throw new Exception($"sdl could not initialise! {SDL.SDL_GetError()}");
         }
 
         private void InitWindow()
@@ -37,6 +38,11 @@ namespace helloworld
                 SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE);
 
             if (_window == IntPtr.Zero) throw new Exception($"Failed to initialise window window {SDL.SDL_GetError()}");
+        }
+
+        private void InitImageLoading()
+        {
+            if(SDL_image.IMG_Init(SDL_image.IMG_InitFlags.IMG_INIT_PNG) != (int)SDL_image.IMG_InitFlags.IMG_INIT_PNG) throw new Exception($"sdl image could not initialise! {SDL_image.IMG_GetError()}");
         }
 
         public void Run()
@@ -106,11 +112,11 @@ namespace helloworld
         {
             _loadedElements = new Dictionary<string, SurfaceElement>()
             {
-                { "default",  new Image(@".\Assets\bmps\press.bmp", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "up", new Image(@".\Assets\bmps\up.bmp", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "down",  new Image(@".\Assets\bmps\down.bmp", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "left",  new Image(@".\Assets\bmps\left.bmp", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "right",  new Image(@".\Assets\bmps\right.bmp", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) }
+                { "default",  new Image(@".\Assets\pngs\press.png", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "up", new Image(@".\Assets\pngs\up.png", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "down",  new Image(@".\Assets\pngs\down.png", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "left",  new Image(@".\Assets\pngs\left.png", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "right",  new Image(@".\Assets\pngs\right.png", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) }
             };
         }
 

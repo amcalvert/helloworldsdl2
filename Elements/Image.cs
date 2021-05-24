@@ -17,7 +17,7 @@ namespace MyFirstSdlGame.Elements
             _width = width;
             _height = height;
 
-            var loadSurface = SDL.SDL_LoadBMP(imageLoadPath);
+            var loadSurface = SDL_image.IMG_Load(imageLoadPath);
             if (loadSurface == IntPtr.Zero)
             {
                 throw new Exception($"Filed to load image - {SDL.SDL_GetError()}");
