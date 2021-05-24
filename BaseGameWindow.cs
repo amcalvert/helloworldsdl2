@@ -13,6 +13,9 @@ namespace helloworld
         private IList<SurfaceElement> _activeElements = new List<SurfaceElement>();
         private IDictionary<string, SurfaceElement> _loadedElements = new Dictionary<string, SurfaceElement>();
 
+        private const int SCREEN_WIDTH = 1080;
+        private const int SCREEN_HEIGHT = 800;
+
         public BaseGameWindow()
         {
             InitSdl();
@@ -30,7 +33,7 @@ namespace helloworld
             _window = SDL.SDL_CreateWindow("Lolz",
                 SDL.SDL_WINDOWPOS_CENTERED,
                 SDL.SDL_WINDOWPOS_CENTERED,
-                1080, 800,
+                SCREEN_WIDTH, SCREEN_HEIGHT,
                 SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE);
 
             if (_window == IntPtr.Zero) throw new Exception($"Failed to initialise window window {SDL.SDL_GetError()}");
@@ -103,11 +106,11 @@ namespace helloworld
         {
             _loadedElements = new Dictionary<string, SurfaceElement>()
             {
-                { "default",  new Image(@".\Assets\bmps\press.bmp", _windowSurface) },
-                { "up", new Image(@".\Assets\bmps\up.bmp", _windowSurface) },
-                { "down",  new Image(@".\Assets\bmps\down.bmp", _windowSurface) },
-                { "left",  new Image(@".\Assets\bmps\left.bmp", _windowSurface) },
-                { "right",  new Image(@".\Assets\bmps\right.bmp", _windowSurface) }
+                { "default",  new Image(@".\Assets\bmps\press.bmp", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "up", new Image(@".\Assets\bmps\up.bmp", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "down",  new Image(@".\Assets\bmps\down.bmp", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "left",  new Image(@".\Assets\bmps\left.bmp", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "right",  new Image(@".\Assets\bmps\right.bmp", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) }
             };
         }
 
