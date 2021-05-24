@@ -5,21 +5,19 @@ using System.Collections.Generic;
 
 namespace helloworld
 {
-    public class BaseGameWindow : IDisposable
+    public class BaseGame : IDisposable
     {
-        private IntPtr _window = IntPtr.Zero;
-        private IntPtr _windowSurface = IntPtr.Zero;
         private bool _quitRequested;
+        private Window _window;
         private IList<SurfaceElement> _activeElements = new List<SurfaceElement>();
         private IDictionary<string, SurfaceElement> _loadedElements = new Dictionary<string, SurfaceElement>();
 
         private const int SCREEN_WIDTH = 1080;
         private const int SCREEN_HEIGHT = 800;
 
-        public BaseGameWindow()
+        public BaseGame()
         {
             InitSdl();
-            InitWindow();
             InitImageLoading();
         }
 
@@ -27,27 +25,15 @@ namespace helloworld
         {
             if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0) throw new Exception($"sdl could not initialise! {SDL.SDL_GetError()}");
         }
-
-        private void InitWindow()
-        {
-            _window = IntPtr.Zero;
-            _window = SDL.SDL_CreateWindow("Lolz",
-                SDL.SDL_WINDOWPOS_CENTERED,
-                SDL.SDL_WINDOWPOS_CENTERED,
-                SCREEN_WIDTH, SCREEN_HEIGHT,
-                SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE);
-
-            if (_window == IntPtr.Zero) throw new Exception($"Failed to initialise window window {SDL.SDL_GetError()}");
-        }
-
         private void InitImageLoading()
         {
-            if(SDL_image.IMG_Init(SDL_image.IMG_InitFlags.IMG_INIT_PNG) != (int)SDL_image.IMG_InitFlags.IMG_INIT_PNG) throw new Exception($"sdl image could not initialise! {SDL_image.IMG_GetError()}");
+            if (SDL_image.IMG_Init(SDL_image.IMG_InitFlags.IMG_INIT_PNG) != (int)SDL_image.IMG_InitFlags.IMG_INIT_PNG) throw new Exception($"sdl image could not initialise! {SDL_image.IMG_GetError()}");
         }
 
         public void Run()
         {
-            InitSurface();
+            _window = new Window("Lolz Game", SCREEN_WIDTH, SCREEN_HEIGHT);
+
             LoadContent();
 
             _activeElements.Add(_loadedElements["default"]);
@@ -55,7 +41,7 @@ namespace helloworld
             {
                 HandleEvents();
                 DrawContent();
-                SDL.SDL_UpdateWindowSurface(_window);
+                SDL.SDL_UpdateWindowSurface(_window.WindowPointer);
             }
 
             TearDownContent();
@@ -103,20 +89,15 @@ namespace helloworld
             }
         }
 
-        private void InitSurface()
-        {
-            _windowSurface = SDL.SDL_GetWindowSurface(_window);
-        }
-
         private void LoadContent()
         {
             _loadedElements = new Dictionary<string, SurfaceElement>()
             {
-                { "default",  new Image(@".\Assets\pngs\press.png", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "up", new Image(@".\Assets\pngs\up.png", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "down",  new Image(@".\Assets\pngs\down.png", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "left",  new Image(@".\Assets\pngs\left.png", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "right",  new Image(@".\Assets\pngs\right.png", _window, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) }
+                { "default",  new Image(@".\Assets\pngs\press.png", _window.WindowPointer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "up", new Image(@".\Assets\pngs\up.png", _window.WindowPointer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "down",  new Image(@".\Assets\pngs\down.png", _window.WindowPointer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "left",  new Image(@".\Assets\pngs\left.png", _window.WindowPointer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
+                { "right",  new Image(@".\Assets\pngs\right.png", _window.WindowPointer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) }
             };
         }
 
@@ -124,7 +105,7 @@ namespace helloworld
         {
             foreach (var drawElement in _activeElements)
             {
-                drawElement.Draw(_windowSurface);
+                drawElement.Draw(_window.WindowSurfacePointer);
             }
         }
 
@@ -138,8 +119,7 @@ namespace helloworld
 
         public void Dispose()
         {
-            SDL.SDL_DestroyWindow(_window);
-            _window = IntPtr.Zero;
+            _window.Dispose();
             SDL.SDL_Quit();
         }
     }

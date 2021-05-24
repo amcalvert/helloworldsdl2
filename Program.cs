@@ -8,7 +8,7 @@ namespace helloworld
         {
             try
             {
-                var game = new BaseGameWindow();
+                var game = new BaseGame();
                 game.Run();
             }
             catch (Exception exception)
