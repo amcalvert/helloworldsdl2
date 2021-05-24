@@ -103,11 +103,11 @@ namespace helloworld
         {
             _loadedElements = new Dictionary<string, SurfaceElement>()
             {
-                { "default",  new Image(@".\Assets\bmps\press.bmp") },
-                { "up", new Image(@".\Assets\bmps\up.bmp") },
-                { "down",  new Image(@".\Assets\bmps\down.bmp") },
-                { "left",  new Image(@".\Assets\bmps\left.bmp") },
-                { "right",  new Image(@".\Assets\bmps\right.bmp") }
+                { "default",  new Image(@".\Assets\bmps\press.bmp", _windowSurface) },
+                { "up", new Image(@".\Assets\bmps\up.bmp", _windowSurface) },
+                { "down",  new Image(@".\Assets\bmps\down.bmp", _windowSurface) },
+                { "left",  new Image(@".\Assets\bmps\left.bmp", _windowSurface) },
+                { "right",  new Image(@".\Assets\bmps\right.bmp", _windowSurface) }
             };
         }
 
