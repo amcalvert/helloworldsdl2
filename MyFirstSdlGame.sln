@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFirstSdlGame", "MyFirstSd
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{053AC47E-36DC-472C-A78A-4FAC28E636BA}"
 	ProjectSection(SolutionItems) = preProject
+		lib\libjpeg-9.dll = lib\libjpeg-9.dll
+		lib\libpng16-16.dll = lib\libpng16-16.dll
+		lib\libtiff-5.dll = lib\libtiff-5.dll
+		lib\libwebp-7.dll = lib\libwebp-7.dll
 		lib\SDL2.dll = lib\SDL2.dll
+		lib\SDL2_image.dll = lib\SDL2_image.dll
+		lib\zlib1.dll = lib\zlib1.dll
 	EndProjectSection
 EndProject
 Global

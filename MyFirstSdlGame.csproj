@@ -28,7 +28,7 @@
 
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(ProjectDir)\lib\SDL2.dll&quot; &quot;$(OutDir)\SDL2.dll&quot;" />
+    <Exec Command="copy /Y &quot;$(ProjectDir)\lib\*.dll&quot; &quot;$(OutDir)\*.dll&quot;" />
   </Target>
 
 </Project>
