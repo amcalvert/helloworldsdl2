@@ -41,7 +41,6 @@ namespace helloworld
             {
                 HandleEvents();
                 DrawContent();
-                SDL.SDL_UpdateWindowSurface(_window.WindowPointer);
             }
 
             TearDownContent();
@@ -93,20 +92,22 @@ namespace helloworld
         {
             _loadedElements = new Dictionary<string, SurfaceElement>()
             {
-                { "default",  new Image(@".\Assets\pngs\press.png", _window.WindowPointer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "up", new Image(@".\Assets\pngs\up.png", _window.WindowPointer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "down",  new Image(@".\Assets\pngs\down.png", _window.WindowPointer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "left",  new Image(@".\Assets\pngs\left.png", _window.WindowPointer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) },
-                { "right",  new Image(@".\Assets\pngs\right.png", _window.WindowPointer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) }
+                { "default",  new Texture(@".\Assets\pngs\press.png", _window.WindowRendererPointer) },
+                { "up", new Texture(@".\Assets\pngs\up.png", _window.WindowRendererPointer) },
+                { "down",  new Texture(@".\Assets\pngs\down.png", _window.WindowRendererPointer) },
+                { "left",  new Texture(@".\Assets\pngs\left.png", _window.WindowRendererPointer) },
+                { "right",  new Texture(@".\Assets\pngs\right.png", _window.WindowRendererPointer) }
             };
         }
 
         private void DrawContent()
         {
+            SDL.SDL_RenderClear(_window.WindowRendererPointer);
             foreach (var drawElement in _activeElements)
             {
-                drawElement.Draw(_window.WindowSurfacePointer);
+                drawElement.Draw(_window.WindowRendererPointer);
             }
+            SDL.SDL_RenderPresent(_window.WindowRendererPointer);
         }
 
         private void TearDownContent()
@@ -120,6 +121,7 @@ namespace helloworld
         public void Dispose()
         {
             _window.Dispose();
+            SDL_image.IMG_Quit();
             SDL.SDL_Quit();
         }
     }

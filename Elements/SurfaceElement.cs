@@ -9,9 +9,11 @@ namespace MyFirstSdlGame.Elements
 
         public abstract void Draw(IntPtr screenSurface);
 
+        public abstract void DisposeElement();
+
         public void Dispose()
         {
-            SDL.SDL_FreeSurface(_surface);
+            DisposeElement();
             _surface = IntPtr.Zero;
         }
     }
